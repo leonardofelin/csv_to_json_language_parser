@@ -22,12 +22,13 @@ elif args.language == "pt-BR":
     lang = "Pr/BR"
 
 
+data = {}
 csvfile = open(args.file, 'r')
 jsonfile = open(args.language + '.json', 'w')
 
+csvReader = csv.DictReader( csvfile, delimiter=';')
+for row in csvReader:
+    key = row['Name']
+    data[key] = {"Name": row[lang + " Name"],"Description": row[lang + " Discript"]}
 
-reader = csv.DictReader(csvfile, delimiter=';')
-out = [{"Item": row["Name"],"Name": row[lang + " Name"],"Discript": row[lang + " Discript"]} for row in reader]
-for row in out:
-    json.dump(row, jsonfile, indent=4)
-    jsonfile.write('\n')
+json.dump(data, jsonfile, indent=4)
